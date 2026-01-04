@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12 text-center">
+        <h2 class="display-6 text-primary">Menopause & Healthy Aging</h2>
+        <p class="lead">Understanding your body's transition.</p>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Left Side: Symptom Checker -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Symptom Checker</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <p>Check all that apply to you lately:</p>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="symptoms" value="hot_flashes">
+                        <label class="form-check-label">Hot Flashes / Night Sweats</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="symptoms" value="brain_fog">
+                        <label class="form-check-label">Brain Fog / Memory Issues</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="symptoms" value="mood">
+                        <label class="form-check-label">Mood Swings / Anxiety</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="symptoms" value="sleep">
+                        <label class="form-check-label">Insomnia / Sleep Disruption</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="symptoms" value="joint">
+                        <label class="form-check-label">Joint Pain / Stiffness</label>
+                    </div>
+
+                    <hr>
+                    
+                    <label class="form-label fw-bold">Overall Intensity (1-10)</label>
+                    <input type="range" class="form-range" min="0" max="10" name="intensity">
+                    <div class="d-flex justify-content-between text-muted small">
+                        <span>Fine</span>
+                        <span>Unbearable</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 mt-3">Analyze Symptoms</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side: Results & Tips -->
+    <div class="col-md-6 mb-4">
+        {% if result %}
+        <div class="card shadow border-success mb-3">
+            <div class="card-body">
+                <h3 class="card-title text-success">Analysis Complete</h3>
+                <h5 class="mt-3">Status: <strong>{{ result.status }}</strong></h5>
+                <p>You reported {{ result.count }} specific symptoms.</p>
+                
+                <div class="alert alert-light border">
+                    <strong>💡 Recommendation:</strong><br>
+                    {{ result.tip }}
+                </div>
+                
+                <p class="small text-muted">
+                    *Note: Ask "Eve" in the chat for specific recipes or yoga poses to help with these symptoms!
+                </p>
+            </div>
+        </div>
+        {% else %}
+        <!-- Default Info Card -->
+        <div class="card bg-light border-0 h-100">
+            <div class="card-body">
+                <h4>Did you know?</h4>
+                <p>Perimenopause can start as early as your mid-30s. Symptoms often include changes in cycle length and sleep quality before hot flashes begin.</p>
+                <hr>
+                <h5>3 Pillars of Menopause Care:</h5>
+                <ul>
+                    <li><strong>Cooling:</strong> Layered clothing & bedroom temperature.</li>
+                    <li><strong>Strength:</strong> Weight training to protect bone density.</li>
+                    <li><strong>Calm:</strong> Managing cortisol (stress) reduces flash intensity.</li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4>📊 Your Intensity Trends</h4>
+                <canvas id="menopauseChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('menopauseChart');
+
+    // Get data from Python
+    const labels = {{ dates | tojson }};
+    const data = {{ scores | tojson }};
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Symptom Intensity (1-10)',
+                data: data,
+                borderColor: '#e83e8c', // Pink line
+                backgroundColor: 'rgba(232, 62, 140, 0.2)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4 // Makes lines curvy
+            }]
+        },
+        options: {
+            scales: {
+                y: { beginAtZero: true, max: 10 }
+            }
+        }
+    });
+</script>
+{% endblock %}

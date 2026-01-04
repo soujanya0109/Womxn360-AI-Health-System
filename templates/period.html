@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3>Cycle Sync Calculator</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">First day of last period</label>
+                        <input type="date" name="last_period" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Average Cycle Length (Days)</label>
+                        <input type="number" name="cycle_length" value="28" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 custom-btn">Analyze Phase</button>
+                </form>
+
+                {% if result %}
+                <div class="alert alert-info mt-4">
+                    <h4>Current Phase: <strong>{{ result.phase }}</strong></h4>
+                    <p>Day {{ result.day }} of cycle.</p>
+                    <hr>
+                    <p><strong>💡 Daily Tip:</strong> {{ result.advice }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CYCLE HISTORY SECTION -->
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom-0">
+                <h4 class="text-primary">🗓️ Your Cycle History</h4>
+            </div>
+            <div class="card-body p-0">
+                {% if history %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0 text-center">
+                            <thead class="bg-light text-muted">
+                                <tr>
+                                    <th>Start Date</th>
+                                    <th>Cycle Length</th>
+                                    <th>Estimated Next Period</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in history %}
+                                <tr>
+                                    <td class="fw-bold">{{ log.start_date.strftime('%B %d, %Y') }}</td>
+                                    <td>{{ log.cycle_length }} Days</td>
+                                    <!-- Simple calculation in template for next date -->
+                                    <td class="text-muted">
+                                        {{ (log.start_date + timedelta(days=log.cycle_length)).strftime('%B %d') }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="p-4 text-center text-muted">
+                        <p>No cycles tracked yet. Enter your data above to start building your history!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

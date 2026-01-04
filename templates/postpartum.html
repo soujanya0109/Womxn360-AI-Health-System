@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h2>The "Fourth Trimester"</h2>
+    <p class="lead">Recovery is just as important as the birth.</p>
+</div>
+
+<div class="row">
+    <!-- Pelvic Floor Tool -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h3 class="card-title">Pelvic Floor Trainer</h3>
+                <p>Prevent prolapse and improve core strength.</p>
+                <div id="kegel-circle" class="rounded-circle border border-5 border-primary mx-auto d-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+                    <span id="timer-text">Ready</span>
+                </div>
+                <button onclick="startKegel()" class="btn btn-primary mt-3">Start 30s Session</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mental Health Check -->
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h3>Mental Health Check-in</h3>
+                <p>Have you felt able to laugh and see the funny side of things today?</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-success">Yes, as much as always</button>
+                    <button class="btn btn-outline-warning">Not quite so much</button>
+                    <button class="btn btn-outline-danger" onclick="alert('We recommend speaking to a specialist. Would you like to connect with a therapist?')">Not at all</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function startKegel() {
+    let circle = document.getElementById('kegel-circle');
+    let text = document.getElementById('timer-text');
+    text.innerText = "SQUEEZE";
+    circle.classList.add('bg-primary', 'text-white');
+    
+    setTimeout(() => {
+        text.innerText = "RELEASE";
+        circle.classList.remove('bg-primary', 'text-white');
+    }, 3000);
+    
+    setTimeout(() => {
+        text.innerText = "Great Job!";
+    }, 6000);
+}
+</script>
+{% endblock %}

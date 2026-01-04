@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<div class="p-5 mb-5 rounded-3 text-center hero-card" style="background: linear-gradient(135deg, #FFF0F3 0%, #FFE5EC 100%); border-radius: 30px !important;">
+    <div class="container-fluid py-5">
+        <h1 class="display-4 fw-bold mb-3" style="color: #FF8FA3;">Healthcare Designed for You</h1>
+        <p class="col-md-8 fs-5 mx-auto text-muted mb-5">
+            Womxn360 is your holistic companion for every stage of life.
+            From cycle tracking to pregnancy and healthy aging.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3">
+            {% if current_user.is_authenticated %}
+                <a href="/period" class="btn btn-primary btn-lg shadow-sm">Go to Dashboard</a>
+            {% else %}
+                <a href="/register" class="btn btn-primary btn-lg shadow-sm">Get Started</a>
+                <a href="/login" class="btn btn-outline-dark btn-lg rounded-pill px-4">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- FEATURE CARDS -->
+<div class="row align-items-stretch g-4">
+    <div class="col-md-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="display-1 mb-3">🩸</div>
+            <h3 class="fw-bold">Cycle Sync</h3>
+            <p class="text-muted">Track your flow and get food & workout tips synced to your hormones.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="display-1 mb-3">🤰</div>
+            <h3 class="fw-bold">Pregnancy</h3>
+            <p class="text-muted">Week-by-week baby size updates and a persistent tracker.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 p-4 text-center">
+            <div class="display-1 mb-3">🌿</div>
+            <h3 class="fw-bold">Menopause</h3>
+            <p class="text-muted">Analyze symptom intensity trends and get aging support.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
